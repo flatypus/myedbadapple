@@ -7,3 +7,8 @@ Yet another "Bad Apple!!" on ___ script. This one is a simple copy-and-paste scr
 5. In there, paste the script in [minified.js](https://raw.githubusercontent.com/flatypus/myedbadapple/master/minified.js) (or the [unminified version](https://raw.githubusercontent.com/flatypus/myedbadapple/master/unminified.js) if you want to read it).
 
 Enjoy lol!
+
+
+<br>![https://www.youtube.com/watch?v=RV3CUIkaDGE](<img src="https://user-images.githubusercontent.com/68029599/205485308-13a98e50-9739-4e3b-a819-f01caeaff5e3.png"></img>)
+<br>
+&nbsp;[<img src='https://www.youtube.com/s/desktop/7449ebf7/img/favicon_32x32.png' width='16px'/>](https://www.youtube.com/watch?v=RV3CUIkaDGE)&nbsp; Link to the [video](https://www.youtube.com/watch?v=RV3CUIkaDGE)
