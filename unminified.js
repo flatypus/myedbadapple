@@ -35,13 +35,15 @@ elems.forEach((row, yindex) => {
 
 for (let y = 0; y < 9; y++) {
   for (let x = 0; x < 8; x++) {
-    let elem = elems[y][x];
-    if (!has_children.has({ xindex: x, yindex: y })) {
-      random_elem =
-        possible_options[Math.floor(Math.random() * possible_options.length)];
-      elem.innerHTML = random_elem[0];
-      elem.style.backgroundColor = random_elem[1];
-    }
+    try{
+      let elem = elems[y][x];
+      if (!has_children.has({ xindex: x, yindex: y })) {
+        random_elem =
+          possible_options[Math.floor(Math.random() * possible_options.length)];
+        elem.innerHTML = random_elem[0];
+        elem.style.backgroundColor = random_elem[1];
+      }
+    }catch(e){}
   }
 }
 
@@ -50,9 +52,7 @@ for (let y = 0; y < 9; y++) {
 let XSIZE = 3;
 let YSIZE = 3;
 
-let url = `https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary${
-  8 * XSIZE
-}x${9 * YSIZE}.txt`;
+let url = `https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary${8*XSIZE}x${9*YSIZE}.txt`;
 let response = await fetch(url);
 let data = await response.text();
 let binary_data = JSON.parse(data);
@@ -70,33 +70,35 @@ setTimeout(() => {
 // calibration:
 for (let y = 0; y < 9; y++) {
   for (let x = 0; x < 8; x++) {
-    setTimeout(() => {
-      let elem = elems[y][x];
-      let innerText = elem.children[0].innerText;
-      let innerHTML = elem.innerHTML;
-      elem.innerText = "";
-      elem.innerHTML = "";
-      let table = document.createElement("table");
-      table.style.width = "100%";
-      table.style.height = "100%";
-      table.style.borderCollapse = "collapse";
-      for (let i = 0; i < YSIZE; i++) {
-        let tr = document.createElement("tr");
-        for (let j = 0; j < XSIZE; j++) {
-          let td = document.createElement("td");
-          td.style.width = `${Math.floor(100 / XSIZE)}%`;
-          td.style.height = `${Math.floor(100 / YSIZE)}%`;
-          td.style.border = "1px solid black";
-          td.style.backgroundColor = elem.style.backgroundColor;
-          td.style.textAlign = "center";
-          td.innerHTML = innerHTML;
-          td.innerText = innerText;
-          tr.appendChild(td);
+    try{
+      setTimeout(() => {
+        let elem = elems[y][x];
+        let innerText = elem.children[0].innerText;
+        let innerHTML = elem.innerHTML;
+        elem.innerText = "";
+        elem.innerHTML = "";
+        let table = document.createElement("table");
+        table.style.width = "100%";
+        table.style.height = "100%";
+        table.style.borderCollapse = "collapse";
+        for (let i = 0; i < YSIZE; i++) {
+          let tr = document.createElement("tr");
+          for (let j = 0; j < XSIZE; j++) {
+            let td = document.createElement("td");
+            td.style.width = `${Math.floor(100 / XSIZE)}%`;
+            td.style.height = `${Math.floor(100 / YSIZE)}%`;
+            td.style.border = "1px solid black";
+            td.style.backgroundColor = elem.style.backgroundColor;
+            td.style.textAlign = "center";
+            td.innerHTML = innerHTML;
+            td.innerText = innerText;
+            tr.appendChild(td);
+          }
+          table.appendChild(tr);
         }
-        table.appendChild(tr);
-      }
-      elem.appendChild(table);
-    }, 30 * (y * 8 + x));
+        elem.appendChild(table);
+      }, 30 * (y * 8 + x));
+    }catch(e){}
   }
 }
 
@@ -105,20 +107,22 @@ setTimeout(() => {
   let interval = setInterval(() => {
     for (let y = 0; y < 9; y++) {
       for (let x = 0; x < 8; x++) {
-        let elem = elems[y][x];
-        let table = elem.children[0];
-        for (let i = 0; i < YSIZE; i++) {
-          for (let j = 0; j < XSIZE; j++) {
-            let td = table.children[i].children[j];
-            if (binary_data[frame][y * XSIZE + i][x * YSIZE + j] == 1) {
-              //   td.style.backgroundColor = "white";
-              //  set it to the original color
-              td.style.backgroundColor = td.children[0].style.backgroundColor;
-            } else {
-              td.style.backgroundColor = "black";
+        try{
+          let elem = elems[y][x];
+          let table = elem.children[0];
+          for (let i = 0; i < YSIZE; i++) {
+            for (let j = 0; j < XSIZE; j++) {
+              let td = table.children[i].children[j];
+              if (binary_data[frame][y * XSIZE + i][x * YSIZE + j] == 1) {
+                //   td.style.backgroundColor = "white";
+                //  set it to the original color
+                td.style.backgroundColor = td.children[0].style.backgroundColor;
+              } else {
+                td.style.backgroundColor = "black";
+              }
             }
           }
-        }
+        }catch(e){}
       }
     }
     if (frame >= binary_data.length - 1) {
