@@ -10,7 +10,7 @@ success, image = vidcap.read()
 count = 0
 all_frames = []
 # pixels of the output
-XOUTPUT, YOUTPUT = 16, 18
+XOUTPUT, YOUTPUT = 24, 27
 
 while success:
     success, image = vidcap.read()
@@ -30,4 +30,4 @@ while success:
     count += 1
 
 
-open("binary16x18.txt", "w").write(json.dumps(all_frames))
+open(f"binary{XOUTPUT}x{YOUTPUT}.txt", "w").write(json.dumps(all_frames))

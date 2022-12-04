@@ -48,49 +48,74 @@ for (let y = 0; y < 9; y++) {
 // console.log(has_children);
 
 let url =
-  "https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary8x9.txt";
+  "https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary24x27.txt";
 let response = await fetch(url);
 let data = await response.text();
 let binary_data = JSON.parse(data);
 // console.log(binary_data);
 
-// // play the song
-// var audio = new Audio(
-//   "https://github.com/flatypus/myedbadapple/raw/master/badapple.mp3"
-// );
-// audio.volume = 0.3;
-// audio.play();
+// play the song
+var audio = new Audio(
+  "https://github.com/flatypus/myedbadapple/raw/master/badapple.mp3"
+);
+audio.volume = 0.3;
+audio.play();
 
 // calibration:
-// for (let y = 0; y < 9; y++) {
-//   for (let x = 0; x < 8; x++) {
-//     setTimeout(() => {
-//       let elem = elems[y][x];
-//       elem.style.backgroundColor = "black";
-//     }, 30 * (y * 8 + x));
-//   }
-// }
+for (let y = 0; y < 9; y++) {
+  for (let x = 0; x < 8; x++) {
+    setTimeout(() => {
+      let elem = elems[y][x];
+      let innerText = elem.children[0].innerText;
+      let innerHTML = elem.innerHTML;
+      elem.innerText = "";
+      elem.innerHTML = "";
+      let table = document.createElement("table");
+      table.style.width = "100%";
+      table.style.height = "100%";
+      table.style.borderCollapse = "collapse";
+      for (let i = 0; i < 2; i++) {
+        let tr = document.createElement("tr");
+        for (let j = 0; j < 2; j++) {
+          let td = document.createElement("td");
+          td.style.width = "50%";
+          td.style.height = "50%";
+          td.style.border = "1px solid black";
+          td.style.textAlign = "center";
+          td.innerHTML = innerHTML;
+          td.innerText = innerText;
+          tr.appendChild(td);
+        }
+        table.appendChild(tr);
+      }
+      elem.appendChild(table);
+    }, 30 * (y * 8 + x));
+  }
+}
 
 setTimeout(() => {
   let frame = 0;
   let interval = setInterval(() => {
-    console.log(binary_data[frame].map((e) => e.join("")).join("\n"));
     for (let y = 0; y < 9; y++) {
       for (let x = 0; x < 8; x++) {
-        //   console.log(binary_data[frame][y][x], elems[y][x], x, y);
-        // if (binary_data[frame][y][x] == 1) {
-        //   elems[y][x].style.backgroundColor = "white";
-        // } else {
-        // elems[y][x].style.backgroundColor = "black";
-        // }
-        elems[y][x].innerText = binary_data[frame][y][x] == 1 ? "■" : "□";
+        let elem = elems[y][x];
+        let table = elem.children[0];
+        for (let i = 0; i < 2; i++) {
+          for (let j = 0; j < 2; j++) {
+            let td = table.children[i].children[j];
+            if (binary_data[frame][y * 2 + i][x * 2 + j] == 1) {
+              td.style.backgroundColor = "white";
+            } else {
+              td.style.backgroundColor = "black";
+            }
+          }
+        }
       }
     }
     if (frame >= binary_data.length - 1) {
       clearInterval(interval);
     }
     frame++;
-  }, 1000 / 30);
+  }, 1000 / 10);
+  // originally there was a nonzero number there, but i added the calibration and now it's just instantly run
 }, 0);
-
-// console.log(elems);
