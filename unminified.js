@@ -47,8 +47,12 @@ for (let y = 0; y < 9; y++) {
 
 // console.log(has_children);
 
-let url =
-  "https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary24x27.txt";
+let XSIZE = 3;
+let YSIZE = 3;
+
+let url = `https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary${
+  8 * XSIZE
+}x${9 * YSIZE}.txt`;
 let response = await fetch(url);
 let data = await response.text();
 let binary_data = JSON.parse(data);
@@ -59,7 +63,9 @@ var audio = new Audio(
   "https://github.com/flatypus/myedbadapple/raw/master/badapple.mp3"
 );
 audio.volume = 0.3;
-audio.play();
+setTimeout(() => {
+  audio.play();
+}, 2170);
 
 // calibration:
 for (let y = 0; y < 9; y++) {
@@ -74,13 +80,14 @@ for (let y = 0; y < 9; y++) {
       table.style.width = "100%";
       table.style.height = "100%";
       table.style.borderCollapse = "collapse";
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < YSIZE; i++) {
         let tr = document.createElement("tr");
-        for (let j = 0; j < 2; j++) {
+        for (let j = 0; j < XSIZE; j++) {
           let td = document.createElement("td");
-          td.style.width = "50%";
-          td.style.height = "50%";
+          td.style.width = `${Math.floor(100 / XSIZE)}%`;
+          td.style.height = `${Math.floor(100 / YSIZE)}%`;
           td.style.border = "1px solid black";
+          td.style.backgroundColor = elem.style.backgroundColor;
           td.style.textAlign = "center";
           td.innerHTML = innerHTML;
           td.innerText = innerText;
@@ -100,11 +107,13 @@ setTimeout(() => {
       for (let x = 0; x < 8; x++) {
         let elem = elems[y][x];
         let table = elem.children[0];
-        for (let i = 0; i < 2; i++) {
-          for (let j = 0; j < 2; j++) {
+        for (let i = 0; i < YSIZE; i++) {
+          for (let j = 0; j < XSIZE; j++) {
             let td = table.children[i].children[j];
-            if (binary_data[frame][y * 2 + i][x * 2 + j] == 1) {
-              td.style.backgroundColor = "white";
+            if (binary_data[frame][y * XSIZE + i][x * YSIZE + j] == 1) {
+              //   td.style.backgroundColor = "white";
+              //  set it to the original color
+              td.style.backgroundColor = td.children[0].style.backgroundColor;
             } else {
               td.style.backgroundColor = "black";
             }
