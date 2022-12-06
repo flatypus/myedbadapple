@@ -9,5 +9,3 @@ Yet another "Bad Apple!!" on ___ script. This one is a simple copy-and-paste scr
 Enjoy lol!
 
 <img src="https://user-images.githubusercontent.com/68029599/205485308-13a98e50-9739-4e3b-a819-f01caeaff5e3.png"></img>
-&nbsp;
-<img src='https://www.youtube.com/s/desktop/7449ebf7/img/favicon_32x32.png' width='16px'/>
