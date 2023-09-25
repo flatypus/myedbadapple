@@ -47,6 +47,28 @@ for (let y = 0; y < 9; y++) {
   }
 }
 
+// function to parse run length encoding
+const parse_rle = (rle_frame, width) => {
+  let one_dimension = [];
+  let n = "";
+  for (let i = 0; i < rle_frame.length; i++) {
+    if (rle_frame[i] == "W" || rle_frame[i] == "B") {
+      // add the number to the one_dimension array
+      for (let j = 0; j < parseInt(n); j++) {
+        one_dimension.push(rle_frame[i] == "W" ? 1 : 0);
+      }
+      n = "";
+    } else {
+      n += rle_frame[i];
+    }
+  }
+  let two_dimension = [];
+  for (let i = 0; i < one_dimension.length; i += width) {
+    two_dimension.push(one_dimension.slice(i, i + width));
+  }
+  return two_dimension;
+};
+
 // console.log(has_children);
 
 let XSIZE = 15;
@@ -58,8 +80,9 @@ let url = `https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary
 let response = await fetch(url);
 let data = await response.text();
 let binary_data = data.split("\n");
-
-// console.log(binary_data);
+let parsed_binary_data = binary_data.map((frame) =>
+  parse_rle(frame, 8 * XSIZE)
+);
 
 // play the song
 var audio = new Audio(
@@ -90,6 +113,9 @@ for (let y = 0; y < 9; y++) {
             let td = document.createElement("td");
             td.style.width = `${Math.floor(100 / XSIZE)}%`;
             td.style.height = `${Math.floor(100 / YSIZE)}%`;
+            td.style.fontSize = "2px";
+            td.style.paddingTop = "8px";
+            td.style.paddingBottom = "8px";
             td.style.border = "1px solid black";
             td.style.backgroundColor = elem.style.backgroundColor;
             td.style.textAlign = "center";
@@ -105,30 +131,6 @@ for (let y = 0; y < 9; y++) {
   }
 }
 
-// function to parse run length encoding
-const parse_rle = (rle_frame, width) => {
-  let one_dimension = [];
-  let current = rle_frame[0];
-  let n = "";
-  for (let i = 0; i < rle_frame.length; i++) {
-    if (rle_frame[i] == "W" || rle_frame[i] == "B") {
-      // add the number to the one_dimension array
-      for (let j = 0; j < parseInt(n); j++) {
-        one_dimension.push(current);
-      }
-      n = "";
-      current = rle_frame[i];
-    } else {
-      n += rle_frame[i];
-    }
-  }
-  let two_dimension = [];
-  for (let i = 0; i < one_dimension.length; i += width) {
-    two_dimension.push(one_dimension.slice(i, i + width));
-  }
-  return two_dimension;
-};
-
 setTimeout(() => {
   let frame = 0;
   let interval = setInterval(() => {
@@ -140,8 +142,7 @@ setTimeout(() => {
           for (let i = 0; i < YSIZE; i++) {
             for (let j = 0; j < XSIZE; j++) {
               let td = table.children[i].children[j];
-              let frame_data = parse_rle(binary_data[frame], XSIZE);
-              if (frame_data[y * XSIZE + i][x * YSIZE + j] == 1) {
+              if (parsed_binary_data[frame][y * XSIZE + i][x * YSIZE + j]) {
                 //   td.style.backgroundColor = "white";
                 //  set it to the original color
                 td.style.backgroundColor = td.children[0].style.backgroundColor;
