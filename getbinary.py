@@ -12,6 +12,22 @@ all_frames = []
 # pixels of the output
 XOUTPUT, YOUTPUT = 120, 135
 
+
+def run_length_encode(binary):
+    c = binary[0][0]
+    s = ""
+    count = 0
+    for i in [item for sublist in binary for item in sublist]:
+        if i == c:
+            count += 1
+        else:
+            s += str(count) + ("W" if c == 0 else "B")
+            c = i
+            count = 1
+    s += str(count) + ("W" if c == 0 else "B")
+    return s
+
+
 while success:
     success, image = vidcap.read()
     if (count % 3 == 0):
@@ -24,10 +40,9 @@ while success:
         ret, binary = cv2.threshold(shrunk, 127, 1, cv2.THRESH_BINARY)
         # Image.fromarray(shrunk).save(f"binary/{count}.png")
         binary = [i.tolist() for i in binary]
-        all_frames.append(binary)
-        # print(binary)
+        all_frames.append(run_length_encode(binary))
         print("Frame", count)
     count += 1
 
 
-open(f"binary{XOUTPUT}x{YOUTPUT}.txt", "w").write(json.dumps(all_frames))
+open(f"binary{XOUTPUT}x{YOUTPUT}.txt", "w").write('\n'.join(all_frames))
