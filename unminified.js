@@ -35,7 +35,7 @@ elems.forEach((row, yindex) => {
 
 for (let y = 0; y < 9; y++) {
   for (let x = 0; x < 8; x++) {
-    try{
+    try {
       let elem = elems[y][x];
       if (!has_children.has({ xindex: x, yindex: y })) {
         random_elem =
@@ -43,16 +43,18 @@ for (let y = 0; y < 9; y++) {
         elem.innerHTML = random_elem[0];
         elem.style.backgroundColor = random_elem[1];
       }
-    }catch(e){}
+    } catch (e) {}
   }
 }
 
 // console.log(has_children);
 
-let XSIZE = 3;
-let YSIZE = 3;
+let XSIZE = 15;
+let YSIZE = 15;
 
-let url = `https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary${8*XSIZE}x${9*YSIZE}.txt`;
+let url = `https://raw.githubusercontent.com/flatypus/myedbadapple/master/binary${
+  8 * XSIZE
+}x${9 * YSIZE}.txt`;
 let response = await fetch(url);
 let data = await response.text();
 let binary_data = JSON.parse(data);
@@ -70,7 +72,7 @@ setTimeout(() => {
 // calibration:
 for (let y = 0; y < 9; y++) {
   for (let x = 0; x < 8; x++) {
-    try{
+    try {
       setTimeout(() => {
         let elem = elems[y][x];
         let innerText = elem.children[0].innerText;
@@ -98,7 +100,7 @@ for (let y = 0; y < 9; y++) {
         }
         elem.appendChild(table);
       }, 30 * (y * 8 + x));
-    }catch(e){}
+    } catch (e) {}
   }
 }
 
@@ -107,7 +109,7 @@ setTimeout(() => {
   let interval = setInterval(() => {
     for (let y = 0; y < 9; y++) {
       for (let x = 0; x < 8; x++) {
-        try{
+        try {
           let elem = elems[y][x];
           let table = elem.children[0];
           for (let i = 0; i < YSIZE; i++) {
@@ -122,7 +124,7 @@ setTimeout(() => {
               }
             }
           }
-        }catch(e){}
+        } catch (e) {}
       }
     }
     if (frame >= binary_data.length - 1) {

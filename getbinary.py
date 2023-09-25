@@ -10,7 +10,7 @@ success, image = vidcap.read()
 count = 0
 all_frames = []
 # pixels of the output
-XOUTPUT, YOUTPUT = 24, 27
+XOUTPUT, YOUTPUT = 120, 135
 
 while success:
     success, image = vidcap.read()
