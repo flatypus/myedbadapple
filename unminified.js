@@ -19,7 +19,6 @@ Array.from(table.children).forEach((row, yindex) => {
     elems.push(rowlist);
   }
 });
-console.log(elems);
 // now we have a list of 8x9=72 elements
 
 let has_children = new Map();
@@ -121,11 +120,22 @@ for (let y = 0; y < 9; y++) {
             td.style.textAlign = "center";
             td.innerHTML = innerHTML;
             td.innerText = innerText;
+            td.style.color = "#FFFFFF00";
             tr.appendChild(td);
           }
           table.appendChild(tr);
         }
         elem.appendChild(table);
+        // absolutely position a text in the center of the table
+        let text = document.createElement("div");
+        text.style.position = "absolute";
+        text.style.top = "50%";
+        text.style.left = "50%";
+        text.style.transform = "translate(-50%, -50%)";
+        text.style.fontSize = "32px";
+        text.innerText = innerText;
+        elem.style.position = "relative";
+        elem.appendChild(text);
       }, 30 * (y * 8 + x));
     } catch (e) {}
   }
@@ -139,6 +149,8 @@ setTimeout(() => {
         try {
           let elem = elems[y][x];
           let table = elem.children[0];
+          let number_of_blacks = 0;
+
           for (let i = 0; i < YSIZE; i++) {
             for (let j = 0; j < XSIZE; j++) {
               let td = table.children[i].children[j];
@@ -148,8 +160,15 @@ setTimeout(() => {
                 td.style.backgroundColor = td.children[0].style.backgroundColor;
               } else {
                 td.style.backgroundColor = "black";
+                number_of_blacks += 1;
               }
             }
+          }
+          if (number_of_blacks > (XSIZE * YSIZE) / 2) {
+            // set text to white
+            elem.children[1].style.color = "white";
+          } else {
+            elem.children[1].style.color = "black";
           }
         } catch (e) {}
       }
