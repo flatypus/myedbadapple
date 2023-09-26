@@ -29,7 +29,9 @@ def run_length_encode(binary):
 
 while success:
     success, image = vidcap.read()
-    if (count % 3 == 0):
+    if count % 2 == 0:
+        if image is None:
+            break
         blur = cv2.GaussianBlur(image, (0, 0), sigmaX=3,
                                 sigmaY=3, borderType=cv2.BORDER_DEFAULT)
         result = skimage.exposure.rescale_intensity(

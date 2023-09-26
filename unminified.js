@@ -141,41 +141,51 @@ for (let y = 0; y < 9; y++) {
   }
 }
 
-setTimeout(() => {
-  let frame = 0;
-  let interval = setInterval(() => {
-    for (let y = 0; y < 9; y++) {
-      for (let x = 0; x < 8; x++) {
-        try {
-          let elem = elems[y][x];
-          let table = elem.children[0];
-          let number_of_blacks = 0;
-
-          for (let i = 0; i < YSIZE; i++) {
-            for (let j = 0; j < XSIZE; j++) {
-              let td = table.children[i].children[j];
-              if (parsed_binary_data[frame][y * XSIZE + i][x * YSIZE + j]) {
-                //   td.style.backgroundColor = "white";
-                //  set it to the original color
-                td.style.backgroundColor = td.children[0].style.backgroundColor;
-              } else {
-                td.style.backgroundColor = "black";
-                number_of_blacks += 1;
-              }
-            }
-          }
-          if (number_of_blacks > (XSIZE * YSIZE) / 2) {
-            // set text to white
-            elem.children[1].style.color = "white";
-          } else {
-            elem.children[1].style.color = "black";
-          }
-        } catch (e) {}
+const updateColor = (table, frameData) => {
+  let numberOfBlacks = 0;
+  for (let row of table.children) {
+    for (let td of row.children) {
+      const newColor = frameData[row.rowIndex][td.cellIndex];
+      if (newColor) {
+        td.style.backgroundColor = td.children[0].style.backgroundColor;
+      } else {
+        td.style.backgroundColor = "black";
+        numberOfBlacks += 1;
       }
     }
-    if (frame >= binary_data.length - 1) {
+  }
+  return numberOfBlacks;
+};
+
+const updateTextColor = (elem, numberOfBlacks) => {
+  const halfCells = (XSIZE * YSIZE) / 2;
+  elem.children[1].style.color = numberOfBlacks > halfCells ? "white" : "black";
+};
+
+setTimeout(() => {
+  let frame = 0;
+  const totalFrames = binary_data.length;
+
+  const interval = setInterval(() => {
+    for (let y = 0; y < elems.length; y++) {
+      for (let x = 0; x < elems[y].length; x++) {
+        try {
+          const elem = elems[y][x];
+          const table = elem.children[0];
+          const frameData = parsed_binary_data[frame]
+            .slice(y * YSIZE, (y + 1) * YSIZE)
+            .map((row) => row.slice(x * XSIZE, (x + 1) * XSIZE));
+          const numberOfBlacks = updateColor(table, frameData);
+          updateTextColor(elem, numberOfBlacks);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    frame += 1;
+    if (frame >= totalFrames) {
       clearInterval(interval);
     }
-    frame++;
-  }, 1000 / 10);
+  }, 66);
 }, 500);
