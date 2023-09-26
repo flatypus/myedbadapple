@@ -115,12 +115,12 @@ for (let y = 0; y < 9; y++) {
             td.style.fontSize = "2px";
             td.style.paddingTop = "8px";
             td.style.paddingBottom = "8px";
-            td.style.border = "1px solid black";
+            td.style.border = "1px solid transparent";
             td.style.backgroundColor = elem.style.backgroundColor;
             td.style.textAlign = "center";
             td.innerHTML = innerHTML;
             td.innerText = innerText;
-            td.style.color = "#FFFFFF00";
+            td.style.color = "transparent";
             tr.appendChild(td);
           }
           table.appendChild(tr);
