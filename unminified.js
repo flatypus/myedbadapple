@@ -132,7 +132,7 @@ for (let y = 0; y < 9; y++) {
         text.style.top = "50%";
         text.style.left = "50%";
         text.style.transform = "translate(-50%, -50%)";
-        text.style.fontSize = "32px";
+        text.style.fontSize = "48px";
         text.innerText = innerText;
         elem.style.position = "relative";
         elem.appendChild(text);
@@ -178,5 +178,4 @@ setTimeout(() => {
     }
     frame++;
   }, 1000 / 10);
-  // originally there was a nonzero number there, but i added the calibration and now it's just instantly run
-}, 0);
+}, 500);
